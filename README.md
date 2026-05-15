@@ -1,65 +1,128 @@
-GenAI Fake News Detector
-An AI-powered fake news detection platform that combines NLP classification, LLM reasoning, and retrieval-based fact verification.
+```markdown
+# 🛡️ GenAI Fake News Detector
+> **AI-powered fact-checking** combining NLP classification, LLM reasoning, and retrieval-based verification.
 
-Tech Stack
-Frontend: Next.js
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Next.js](https://img.shields.io/badge/Frontend-Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![Gemini](https://img.shields.io/badge/AI-Gemini_1.5_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
 
-Backend: FastAPI
+---
 
-Database: Supabase/PostgreSQL
+## 📖 Overview
+This platform combat misinformation using a multi-layered verification approach. It provides an **explainable verdict** by analyzing context and cross-referencing data using Google Gemini.
 
-AI: HuggingFace Transformers + Gemini/OpenAI
+### ✨ Features
+* 🔍 **Classification:** High-speed NLP analysis of news headers.
+* 🤖 **LLM Reasoning:** Deep semantic analysis via Google Gemini.
+* ✅ **Fact Verification:** Real-time cross-referencing with trusted news sources.
+* 📝 **Explainable AI:** Detailed reasoning for every "Fake", "Real", or "Uncertain" verdict.
+* 📜 **History Tracking:** Save and manage previous analysis reports.
 
-Retrieval: NewsAPI + FAISS/Chroma
+---
 
-Features
-Fake news classification
+## 🛠️ Tech Stack
+| Layer | Technology |
+| :--- | :--- |
+| **Frontend** | Next.js (React), Tailwind CSS |
+| **Backend** | FastAPI (Python 3.11+) |
+| **Database** | Supabase (PostgreSQL) |
+| **AI Models** | HuggingFace Transformers + Gemini API |
+| **Retrieval** | NewsAPI + FAISS / ChromaDB |
 
-Claim extraction
+---
 
-Fact verification
+## 🚀 Getting Started
 
-Explainable verdict
+### 1️⃣ Backend Setup (FastAPI)
+Open your PowerShell terminal and execute these commands:
 
-URL/article analysis
-
-History tracking
-
-🚀 How to Run the Project
-1. Backend (FastAPI)
-Location: /backend
-
-Navigate to directory:
+**Step 1: Navigate to backend**
+```powershell
 cd backend
 
-Activate Virtual Environment:
-.\venv\Scripts\Activate.ps1 (Windows) or source venv/bin/activate (Mac/Linux)
+```
 
-Install Dependencies:
+**Step 2: Activate Virtual Environment**
+
+```powershell
+.\venv\Scripts\Activate.ps1
+
+```
+
+**Step 3: Install Dependencies**
+
+```powershell
 pip install -r requirements.txt
 
-Start Server:
+```
+
+**Step 4: Start the Server**
+
+```powershell
 uvicorn app.main:app --reload
 
-Local Link: http://127.0.0.1:8000
+```
 
-API Documentation (Swagger): http://127.0.0.1:8000/docs
+> 🔗 **Local API:** [http://127.0.0.1:8000](https://www.google.com/search?q=http://127.0.0.1:8000)
+> 📑 **Interactive Docs:** [http://127.0.0.1:8000/docs](https://www.google.com/search?q=http://127.0.0.1:8000/docs)
 
-2. Frontend (Next.js)
-Location: /frontend
+---
 
-Navigate to directory:
+### 2️⃣ Frontend Setup (Next.js)
+
+Open a **new** terminal tab and execute:
+
+**Step 1: Navigate to frontend**
+
+```powershell
 cd frontend
 
-Install Packages:
+```
+
+**Step 2: Install Packages**
+
+```powershell
 npm install
 
-Start Development Server:
+```
+
+**Step 3: Run Development Server**
+
+```powershell
 npm run dev
 
-Local Link: http://localhost:3000
+```
 
-🔑 Environment Variables
-Ensure you have a .env file in the /backend folder with the following:
+> 🔗 **Web Interface:** [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000)
 
-GEMINI_API_KEY=your_api_key_here
+---
+
+## 🔐 Environment Configuration
+
+Create a `.env` file in the `backend/` directory:
+
+```env
+GEMINI_API_KEY=your_google_ai_studio_key
+DATABASE_URL=your_supabase_connection_string
+
+```
+
+---
+
+## 📂 Project Structure
+
+```text
+genai-fake-news-detector/
+├── backend/            # FastAPI source code & logic
+│   ├── app/            # Main application package
+│   │   ├── models/     # Pydantic schemas
+│   │   ├── routes/     # API endpoints
+│   │   └── services/   # AI & Gemini logic
+│   └── venv/           # Python environment
+└── frontend/           # Next.js UI & components
+
+```
+
+```
+
+```

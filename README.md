@@ -1,50 +1,62 @@
-#  GenAI Fake News Detector
+# GenAI Fake News Detector
 
-An AI-powered misinformation detection platform that verifies suspicious claims using **live news evidence + LLM reasoning**.
+AI-powered misinformation detection platform that verifies suspicious claims using live news evidence and LLM reasoning.
 
-Built with **FastAPI, Groq LLM, GNews API, Next.js, and Tailwind CSS**.
+Built with FastAPI, Groq LLM, GNews API, Next.js, and Tailwind CSS.
 
 ---
 
-##  Overview
+## Live Demo
 
-Fake news spreads rapidly across social media, messaging apps, and online platforms, making misinformation harder to detect.
+Deployed Application:  
+https://genai-fake-news-frontend.onrender.com/
+
+---
+
+## Overview
+
+Fake news spreads rapidly across social media, messaging apps, and online platforms, making misinformation increasingly difficult to identify.
 
 This project helps users verify suspicious claims by:
 
-- analyzing the claim
-- searching live news sources for evidence
-- using an LLM to reason over the evidence
-- generating a verdict with confidence and explanation
+- analyzing user-submitted claims
+- retrieving relevant live news evidence
+- reasoning over evidence using large language models
+- generating transparent verdicts with confidence scoring
 
-### Verdict Types
--  **Real**
--  **Fake**
--  **Uncertain**
+### Verdict Categories
+
+- Real
+- Fake
+- Uncertain
 
 ---
 
-##  Features
+## Features
 
-###  AI-Powered Fact Checking
+### AI-Powered Fact Checking
+
 - LLM-based misinformation detection
 - Context-aware reasoning
 - Natural language explanation generation
+- Confidence scoring
 
-###  Live News Verification
-- Real-time news retrieval using GNews API
-- Evidence-backed validation
-- Source attribution for transparency
+### Live News Verification
 
-###  Smart Verdict System
+- Real-time evidence retrieval using GNews API
+- Trusted source-backed validation
+- Transparent source attribution
+
+### Verdict Analysis
+
 Each analysis returns:
 
-- Verdict
-- Confidence score
-- Explanation
-- Supporting evidence sources
+- verdict
+- confidence score
+- explanation
+- supporting evidence sources
 
-Example response:
+Example:
 
 ```json
 {
@@ -61,17 +73,19 @@ Example response:
 }
 ```
 
-### 🎨 Modern Interactive UI
-- Responsive frontend
-- Smooth animations
-- Cyber/AI-inspired interface
-- Clean user experience
+### Frontend Interface
+
+- Responsive Next.js frontend
+- Clean interactive design
+- Smooth user experience
+- Real-time feedback
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Frontend
+
 - Next.js
 - React
 - Tailwind CSS
@@ -79,17 +93,19 @@ Example response:
 - Lucide React
 
 ### Backend
+
 - FastAPI
 - Python
 - Groq API
 - GNews API
 
 ### AI Model
+
 - Llama 3.3 70B (via Groq)
 
 ---
 
-##  System Architecture
+## System Architecture
 
 ```text
 User Claim
@@ -98,7 +114,7 @@ Claim Preprocessing
    ↓
 Search Query Optimization
    ↓
-Live News Retrieval (GNews)
+Live News Retrieval (GNews API)
    ↓
 Evidence Parsing
    ↓
@@ -111,7 +127,7 @@ Frontend Response
 
 ---
 
-##  Project Structure
+## Project Structure
 
 ```bash
 genAI-fake-news-detector/
@@ -122,7 +138,7 @@ genAI-fake-news-detector/
 │   │   │   └── analyze.py
 │   │   │
 │   │   ├── services/
-│   │   │   ├── gemini_service.py
+│   │   │   ├── groq_service.py
 │   │   │   └── gnews_service.py
 │   │   │
 │   │   ├── models/
@@ -142,22 +158,20 @@ genAI-fake-news-detector/
 
 ---
 
-##  Installation & Setup
+## Installation and Setup
 
-### 1. Clone Repository
+### Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/genAI-fake-news-detector.git
+git clone https://github.com/NavneetSingh/genAI-fake-news-detector.git
 cd genAI-fake-news-detector
 ```
 
-Replace `YOUR_USERNAME` with your GitHub username.
-
 ---
 
-## ⚙️ Backend Setup
+## Backend Setup
 
-Move to backend:
+Move into backend:
 
 ```bash
 cd backend
@@ -169,14 +183,16 @@ Create virtual environment:
 python -m venv venv
 ```
 
-Activate it:
+Activate environment:
 
-### Windows
+Windows:
+
 ```bash
 venv\Scripts\activate
 ```
 
-### Mac/Linux
+Mac/Linux:
+
 ```bash
 source venv/bin/activate
 ```
@@ -208,9 +224,9 @@ http://localhost:8000
 
 ---
 
-##  Frontend Setup
+## Frontend Setup
 
-Move to frontend:
+Move into frontend:
 
 ```bash
 cd frontend
@@ -236,7 +252,7 @@ http://localhost:3000
 
 ---
 
-## 🔌 API Endpoint
+## API Endpoint
 
 ### Analyze Claim
 
@@ -269,59 +285,60 @@ Response:
 
 ---
 
-## 🎥 Demo
+## Demonstration
 
-### Sample Project Runs
+### UI Walkthrough
 
-#### UI Walkthrough
-![Project Demo 1](./prjss1.gif)
+![Demo 1](./prjss1.gif)
 
-#### Fake Claim Analysis
-![Project Demo 2](./prjss2.gif)
+### Fake Claim Detection
 
-#### Live News Verification
-![Project Demo 3](./prjss3.gif)
+![Demo 2](./prjss2.gif)
+
+### Live Verification Example
+
+![Demo 3](./prjss3.gif)
 
 ---
 
-##  Future Improvements
+## Future Improvements
 
-Planned upgrades:
+Planned enhancements:
 
 - URL article fact checking
-- Image / screenshot fake news detection
+- Screenshot/image fake news detection
 - OCR integration
 - WhatsApp forward verification
 - Social media misinformation analysis
-- RAG-based evidence retrieval
+- Retrieval-Augmented Generation (RAG)
 - Source credibility scoring
-- Domain-specific fact checking
-- Multilingual misinformation detection
+- Domain-specific fact verification
+- Multilingual support
 
 ---
 
-##  Why This Project Matters
+## Why This Project Matters
 
-Misinformation can influence:
+Misinformation can significantly influence:
 
-- Elections
-- Public safety
-- Healthcare decisions
-- Financial markets
-- Social trust
+- elections
+- public safety
+- healthcare decisions
+- financial markets
+- public trust
 
-This project demonstrates how Generative AI can be used responsibly to combat misinformation using transparent, evidence-backed reasoning.
-
----
-
-##  Author
-
-**Navneet Singh**
-
-GitHub: https://github.com/Navneet1605
+This project demonstrates how Generative AI can be responsibly used to combat misinformation using transparent, evidence-backed reasoning.
 
 ---
 
-## 📄 License
+## Author
+
+Navneet Singh
+
+GitHub: https://github.com/NavneetSingh
+
+---
+
+## License
 
 MIT License

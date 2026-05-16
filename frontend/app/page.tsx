@@ -28,35 +28,30 @@ function CodeRain() {
       "> evidence located",
       "> trust score = 91",
     ],
-
     [
       "> fact_check(headline)",
       "> scanning global reports...",
       "> conflicting claims = none",
       "> authenticity confirmed",
     ],
-
     [
       "> validate_claim(statement)",
       "> searching references...",
       "> analyzing context...",
       "> truth confidence = 88",
     ],
-
     [
       "> cross_reference(news_db)",
       "> querying archive...",
       "> matching reports found",
       "> confidence boosted",
     ],
-
     [
       "> detect_bias(content)",
       "> sentiment analysis running...",
       "> manipulation risk = low",
       "> source accepted",
     ],
-
     [
       "> trace_origin(post)",
       "> locating primary publisher...",
@@ -149,7 +144,10 @@ export default function Home() {
     }, 100);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/analyze", {
+      // Uses your environment variable when deployed, drops back to localhost for local work
+      const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      
+      const response = await fetch(`${baseUrl}/analyze`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,10 +161,10 @@ export default function Home() {
         setResult(data);
         setLoading(false);
 
-        setTimeout(() => {
-          smoothScrollTo(resultRef);
-        }, 300);
-      }, 2200);
+      setTimeout(() => {
+        smoothScrollTo(resultRef);
+      }, 300);
+     }, 2200);
     } catch {
       setLoading(false);
 
@@ -211,7 +209,6 @@ export default function Home() {
       bg: "from-red-500/20 to-transparent",
       icon: <ShieldAlert size={40} />,
     },
-
     real: {
       title: "✓ VERIFIED SOURCE",
       subtitle: "REAL NEWS",
@@ -221,7 +218,6 @@ export default function Home() {
       bg: "from-green-500/20 to-transparent",
       icon: <ShieldCheck size={40} />,
     },
-
     uncertain: {
       title: "? NEWS UNCLEAR",
       subtitle: "UNCERTAIN",

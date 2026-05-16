@@ -1,6 +1,6 @@
 # GenAI Fake News Detector
 
-AI-powered misinformation detection platform that verifies suspicious claims using live news evidence and LLM reasoning.
+AI-powered misinformation detection platform that verifies suspicious claims using live news evidence and LLM reasoning and RAG framework.
 
 Built with FastAPI, Groq LLM, GNews API, Next.js, and Tailwind CSS.
 
@@ -335,7 +335,7 @@ This project demonstrates how Generative AI can be responsibly used to combat mi
 
 Navneet Singh
 
-GitHub: https://github.com/NavneetSingh
+GitHub: https://github.com/Navneet1605
 
 ---
 

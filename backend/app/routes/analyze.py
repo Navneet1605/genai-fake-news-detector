@@ -45,7 +45,8 @@ def analyze_news(request: NewsRequest):
     confidence = normalize_confidence(result.get("confidence"))
 
     return NewsResponse(
-        verdict=verdict,
-        confidence=confidence,
-        explanation=explanation
-    )
+    verdict=result["verdict"],
+    confidence=result["confidence"],
+    explanation=result["explanation"],
+    sources=result.get("sources", [])
+)

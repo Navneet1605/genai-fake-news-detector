@@ -8,26 +8,17 @@ import {
   Search,
   Activity,
   Zap,
+  ExternalLink,
 } from "lucide-react";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
 
 function CodeRain() {
   const [mounted, setMounted] = useState(false);
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     setMounted(true);
-
-    const move = (e: MouseEvent) => {
-      setMouse({
-        x: e.clientX,
-        y: e.clientY,
-      });
-    };
-
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
   }, []);
 
   const columns = [
@@ -37,30 +28,35 @@ function CodeRain() {
       "> evidence located",
       "> trust score = 91",
     ],
+
     [
       "> fact_check(headline)",
       "> scanning global reports...",
       "> conflicting claims = none",
       "> authenticity confirmed",
     ],
+
     [
       "> validate_claim(statement)",
       "> searching references...",
       "> analyzing context...",
       "> truth confidence = 88",
     ],
+
     [
       "> cross_reference(news_db)",
       "> querying archive...",
       "> matching reports found",
       "> confidence boosted",
     ],
+
     [
       "> detect_bias(content)",
       "> sentiment analysis running...",
       "> manipulation risk = low",
       "> source accepted",
     ],
+
     [
       "> trace_origin(post)",
       "> locating primary publisher...",
@@ -73,21 +69,7 @@ function CodeRain() {
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {/* soft spotlight */}
-      <motion.div
-        animate={{
-          x: mouse.x - 250,
-          y: mouse.y - 250,
-        }}
-        transition={{
-          duration: 0.2,
-          ease: "easeOut",
-        }}
-        className="absolute w-[500px] h-[500px] rounded-full bg-green-400/6 blur-3xl"
-      />
-
-      {/* terminal scan columns */}
-      <div className="absolute inset-0 flex justify-around px-10 opacity-35">
+      <div className="absolute inset-0 flex justify-around px-10 opacity-45">
         {columns.map((lines, i) => (
           <motion.div
             key={i}
@@ -113,13 +95,13 @@ function CodeRain() {
                 "\n" + lines[0] + "\n" + lines[1] + "\n" + lines[2],
                 500,
                 "\n" +
-                lines[0] +
-                "\n" +
-                lines[1] +
-                "\n" +
-                lines[2] +
-                "\n" +
-                lines[3],
+                  lines[0] +
+                  "\n" +
+                  lines[1] +
+                  "\n" +
+                  lines[2] +
+                  "\n" +
+                  lines[3],
                 1800,
                 "",
                 400,
@@ -142,12 +124,29 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   const resultRef = useRef<HTMLDivElement | null>(null);
+  const loadingRef = useRef<HTMLDivElement | null>(null);
+
+  const smoothScrollTo = (ref: React.RefObject<HTMLDivElement | null>) => {
+    if (!ref.current) return;
+
+    const y =
+      ref.current.getBoundingClientRect().top + window.scrollY - 40;
+
+    window.scrollTo({
+      top: y,
+      behavior: "smooth",
+    });
+  };
 
   const analyzeNews = async () => {
     if (!text.trim()) return;
 
     setLoading(true);
     setResult(null);
+
+    setTimeout(() => {
+      smoothScrollTo(loadingRef);
+    }, 100);
 
     try {
       const response = await fetch("http://127.0.0.1:8000/analyze", {
@@ -165,12 +164,9 @@ export default function Home() {
         setLoading(false);
 
         setTimeout(() => {
-          resultRef.current?.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
+          smoothScrollTo(resultRef);
         }, 300);
-      }, 2500);
+      }, 2200);
     } catch {
       setLoading(false);
 
@@ -178,7 +174,17 @@ export default function Home() {
         verdict: "ERROR",
         confidence: 0,
         explanation: "Connection to AI backend failed.",
+        sources: [],
       });
+    }
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      analyzeNews();
     }
   };
 
@@ -243,24 +249,9 @@ export default function Home() {
         }}
       />
 
-      {/* SCANLINES */}
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_95%,rgba(0,255,100,0.06)_100%)] bg-[size:100%_4px] opacity-30 animate-pulse" />
-
-      {/* FLOATING BLOBS */}
-      <motion.div
-        animate={{ x: [0, 80, 0], y: [0, 40, 0] }}
-        transition={{ duration: 12, repeat: Infinity }}
-        className="absolute top-[-120px] left-[-120px] w-[400px] h-[400px] rounded-full bg-green-500/20 blur-3xl"
-      />
-
-      <motion.div
-        animate={{ x: [0, -60, 0], y: [0, -40, 0] }}
-        transition={{ duration: 15, repeat: Infinity }}
-        className="absolute bottom-[-120px] right-[-120px] w-[420px] h-[420px] rounded-full bg-cyan-500/20 blur-3xl"
-      />
-
       {/* CONTENT */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-16">
+        {/* HERO */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
@@ -290,14 +281,15 @@ export default function Home() {
           </p>
         </motion.div>
 
-        {/* INPUT PANEL */}
+        {/* INPUT */}
         <motion.div
           whileHover={{ scale: 1.01 }}
-          className="mt-14 border border-green-500/20 bg-white/5 backdrop-blur-2xl rounded-3xl p-8 shadow-[0_0_50px_rgba(0,255,100,0.08)]"
+          className="mt-14 border border-green-500/20 bg-white/5 backdrop-blur-2xl rounded-3xl p-8"
         >
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="Paste suspicious article, headline, or social media claim..."
             className="w-full h-60 rounded-2xl bg-black/40 border border-green-500/20 p-6 text-lg text-green-100 outline-none resize-none focus:ring-2 focus:ring-green-400 shadow-inner"
           />
@@ -310,35 +302,50 @@ export default function Home() {
             whileTap={{ scale: 0.98 }}
             onClick={analyzeNews}
             disabled={loading}
-            className="mt-6 w-full rounded-2xl border border-green-400/30 bg-green-500/10 backdrop-blur-xl py-5 text-xl font-bold tracking-wide flex items-center justify-center gap-4 text-green-300"
+            className="mt-6 w-full rounded-2xl border border-green-400/30 bg-green-500/10 py-5 text-xl font-bold tracking-wide flex items-center justify-center gap-4 text-green-300"
           >
             <Search size={26} />
             {loading ? "SCANNING THREAT..." : "ANALYZE THREAT"}
           </motion.button>
+
+          <p className="text-center text-zinc-500 text-sm mt-4 font-mono">
+            Press ENTER to analyze • SHIFT + ENTER for newline
+          </p>
         </motion.div>
 
-        {/* LOADING STATE */}
+        {/* LOADING */}
         <AnimatePresence>
           {loading && (
             <motion.div
+              ref={loadingRef}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              exit={{ opacity: 0 }}
               className="mt-10 rounded-3xl border border-green-500/30 bg-green-500/5 backdrop-blur-xl p-10 text-center"
             >
               <div className="flex flex-col items-center gap-6">
                 <div className="relative">
                   <motion.div
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
                     className="w-16 h-16 rounded-full border-b-2 border-green-400"
                   />
-                  <Activity className="absolute inset-0 m-auto text-green-400 animate-pulse" size={24} />
+
+                  <Activity
+                    className="absolute inset-0 m-auto text-green-400 animate-pulse"
+                    size={24}
+                  />
                 </div>
+
                 <div className="space-y-2">
                   <p className="text-2xl font-mono font-bold tracking-[0.2em] text-green-400">
-                    Checking NEWS...
+                    CHECKING NEWS...
                   </p>
+
                   <p className="text-zinc-500 font-mono text-sm uppercase tracking-widest">
                     AI Pattern Recognition in progress
                   </p>
@@ -348,27 +355,34 @@ export default function Home() {
           )}
         </AnimatePresence>
 
-        {/* RESULT SECTION */}
+        {/* RESULT */}
         <AnimatePresence>
           {result && !loading && (
             <motion.div
               ref={resultRef}
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`mt-10 rounded-3xl border ${current.border} bg-black/60 backdrop-blur-3xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.5)] ${current.glow}`}
+              className={`mt-10 rounded-3xl border ${current.border} bg-black/60 backdrop-blur-3xl overflow-hidden ${current.glow}`}
             >
               <div className={`h-1 bg-gradient-to-r ${current.bg}`} />
 
               <div className="p-8 md:p-12">
+                {/* HEADER */}
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
                   <div className="flex items-center gap-6">
-                    <div className={`p-5 rounded-2xl bg-black/40 border ${current.border} ${current.color}`}>
+                    <div
+                      className={`p-5 rounded-2xl bg-black/40 border ${current.border} ${current.color}`}
+                    >
                       {current.icon}
                     </div>
+
                     <div>
-                      <p className={`text-sm font-mono font-bold tracking-[0.3em] uppercase ${current.color} opacity-70`}>
+                      <p
+                        className={`text-sm font-mono font-bold tracking-[0.3em] uppercase ${current.color} opacity-70`}
+                      >
                         Analysis Verdict
                       </p>
+
                       <h3 className="text-4xl font-black mt-1 tracking-tight">
                         {current.title}
                       </h3>
@@ -379,22 +393,31 @@ export default function Home() {
                     <p className="text-sm font-mono font-bold tracking-[0.3em] text-zinc-500 uppercase mb-2">
                       Confidence
                     </p>
+
                     <div className="flex items-baseline gap-2">
-                      <span className={`text-6xl font-black ${current.color}`}>
+                      <span
+                        className={`text-6xl font-black ${current.color}`}
+                      >
                         {result.confidence}
                       </span>
-                      <span className="text-2xl font-bold text-zinc-600">%</span>
+
+                      <span className="text-2xl font-bold text-zinc-600">
+                        %
+                      </span>
                     </div>
                   </div>
                 </div>
 
-                {/* PROGRESS BAR */}
+                {/* BAR */}
                 <div className="mt-10 w-full h-3 rounded-full bg-white/5 border border-white/10 overflow-hidden p-[2px]">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${result.confidence}%` }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                    className={`h-full rounded-full bg-gradient-to-r ${current.bg} border-r-2 border-white/50`}
+                    transition={{
+                      duration: 1.5,
+                      ease: "easeOut",
+                    }}
+                    className={`h-full rounded-full bg-gradient-to-r ${current.bg}`}
                   />
                 </div>
 
@@ -402,6 +425,7 @@ export default function Home() {
                 <div className="mt-12">
                   <div className="flex items-center gap-3 mb-6">
                     <Zap className="text-yellow-400" size={20} />
+
                     <h4 className="text-lg font-mono font-bold tracking-widest text-zinc-400 uppercase">
                       Intelligence Briefing
                     </h4>
@@ -418,6 +442,48 @@ export default function Home() {
                   </div>
                 </div>
 
+                {/* SOURCES */}
+                {result.sources?.length > 0 && (
+                  <div className="mt-14">
+                    <h3 className="text-2xl font-black text-white mb-6">
+                      VERIFIED SOURCES
+                    </h3>
+
+                    <div className="grid md:grid-cols-2 gap-5">
+                      {result.sources.map((source: any, index: number) => (
+                        <motion.a
+                          key={index}
+                          href={source.url}
+                          target="_blank"
+                          whileHover={{
+                            scale: 1.02,
+                            y: -3,
+                          }}
+                          className="rounded-2xl border border-green-500/20 bg-white/5 p-6 hover:border-green-400/40 transition-all"
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div>
+                              <p className="text-green-400 font-bold text-sm uppercase tracking-widest">
+                                {source.name}
+                              </p>
+
+                              <h4 className="mt-2 text-lg font-semibold text-white leading-snug">
+                                {source.title}
+                              </h4>
+                            </div>
+
+                            <ExternalLink
+                              className="text-zinc-500"
+                              size={18}
+                            />
+                          </div>
+                        </motion.a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* FOOTER */}
                 <div className="mt-8 pt-8 border-t border-white/5 flex justify-between items-center text-[10px] font-mono text-zinc-600 uppercase tracking-[0.3em]">
                   <span>System: Neural-Link v4.2</span>
                   <span>Encryption: AES-256 Verified</span>

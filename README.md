@@ -1,128 +1,327 @@
-```markdown
-# 🛡️ GenAI Fake News Detector
-> **AI-powered fact-checking** combining NLP classification, LLM reasoning, and retrieval-based verification.
+#  GenAI Fake News Detector
 
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Next.js](https://img.shields.io/badge/Frontend-Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![Gemini](https://img.shields.io/badge/AI-Gemini_1.5_Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+An AI-powered misinformation detection platform that verifies suspicious claims using **live news evidence + LLM reasoning**.
+
+Built with **FastAPI, Groq LLM, GNews API, Next.js, and Tailwind CSS**.
 
 ---
 
-## 📖 Overview
-This platform combat misinformation using a multi-layered verification approach. It provides an **explainable verdict** by analyzing context and cross-referencing data using Google Gemini.
+##  Overview
 
-### ✨ Features
-* 🔍 **Classification:** High-speed NLP analysis of news headers.
-* 🤖 **LLM Reasoning:** Deep semantic analysis via Google Gemini.
-* ✅ **Fact Verification:** Real-time cross-referencing with trusted news sources.
-* 📝 **Explainable AI:** Detailed reasoning for every "Fake", "Real", or "Uncertain" verdict.
-* 📜 **History Tracking:** Save and manage previous analysis reports.
+Fake news spreads rapidly across social media, messaging apps, and online platforms, making misinformation harder to detect.
 
----
+This project helps users verify suspicious claims by:
 
-## 🛠️ Tech Stack
-| Layer | Technology |
-| :--- | :--- |
-| **Frontend** | Next.js (React), Tailwind CSS |
-| **Backend** | FastAPI (Python 3.11+) |
-| **Database** | Supabase (PostgreSQL) |
-| **AI Models** | HuggingFace Transformers + Gemini API |
-| **Retrieval** | NewsAPI + FAISS / ChromaDB |
+- analyzing the claim
+- searching live news sources for evidence
+- using an LLM to reason over the evidence
+- generating a verdict with confidence and explanation
+
+### Verdict Types
+-  **Real**
+-  **Fake**
+-  **Uncertain**
 
 ---
 
-## 🚀 Getting Started
+##  Features
 
-### 1️⃣ Backend Setup (FastAPI)
-Open your PowerShell terminal and execute these commands:
+###  AI-Powered Fact Checking
+- LLM-based misinformation detection
+- Context-aware reasoning
+- Natural language explanation generation
 
-**Step 1: Navigate to backend**
-```powershell
-cd backend
+###  Live News Verification
+- Real-time news retrieval using GNews API
+- Evidence-backed validation
+- Source attribution for transparency
 
+###  Smart Verdict System
+Each analysis returns:
+
+- Verdict
+- Confidence score
+- Explanation
+- Supporting evidence sources
+
+Example response:
+
+```json
+{
+  "verdict": "Uncertain",
+  "confidence": 72,
+  "explanation": "Available evidence does not conclusively confirm the claim.",
+  "sources": [
+    {
+      "title": "Example article",
+      "source": "Reuters",
+      "url": "https://example.com"
+    }
+  ]
+}
 ```
 
-**Step 2: Activate Virtual Environment**
-
-```powershell
-.\venv\Scripts\Activate.ps1
-
-```
-
-**Step 3: Install Dependencies**
-
-```powershell
-pip install -r requirements.txt
-
-```
-
-**Step 4: Start the Server**
-
-```powershell
-uvicorn app.main:app --reload
-
-```
-
-> 🔗 **Local API:** [http://127.0.0.1:8000](https://www.google.com/search?q=http://127.0.0.1:8000)
-> 📑 **Interactive Docs:** [http://127.0.0.1:8000/docs](https://www.google.com/search?q=http://127.0.0.1:8000/docs)
+### 🎨 Modern Interactive UI
+- Responsive frontend
+- Smooth animations
+- Cyber/AI-inspired interface
+- Clean user experience
 
 ---
 
-### 2️⃣ Frontend Setup (Next.js)
+## 🛠 Tech Stack
 
-Open a **new** terminal tab and execute:
+### Frontend
+- Next.js
+- React
+- Tailwind CSS
+- Framer Motion
+- Lucide React
 
-**Step 1: Navigate to frontend**
+### Backend
+- FastAPI
+- Python
+- Groq API
+- GNews API
 
-```powershell
-cd frontend
-
-```
-
-**Step 2: Install Packages**
-
-```powershell
-npm install
-
-```
-
-**Step 3: Run Development Server**
-
-```powershell
-npm run dev
-
-```
-
-> 🔗 **Web Interface:** [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000)
+### AI Model
+- Llama 3.3 70B (via Groq)
 
 ---
 
-## 🔐 Environment Configuration
-
-Create a `.env` file in the `backend/` directory:
-
-```env
-GEMINI_API_KEY=your_google_ai_studio_key
-DATABASE_URL=your_supabase_connection_string
-
-```
-
----
-
-## 📂 Project Structure
+##  System Architecture
 
 ```text
-genai-fake-news-detector/
-├── backend/            # FastAPI source code & logic
-│   ├── app/            # Main application package
-│   │   ├── models/     # Pydantic schemas
-│   │   ├── routes/     # API endpoints
-│   │   └── services/   # AI & Gemini logic
-│   └── venv/           # Python environment
-└── frontend/           # Next.js UI & components
-
+User Claim
+   ↓
+Claim Preprocessing
+   ↓
+Search Query Optimization
+   ↓
+Live News Retrieval (GNews)
+   ↓
+Evidence Parsing
+   ↓
+LLM Analysis (Groq)
+   ↓
+Verdict Generation
+   ↓
+Frontend Response
 ```
 
+---
+
+##  Project Structure
+
+```bash
+genAI-fake-news-detector/
+│
+├── backend/
+│   ├── app/
+│   │   ├── routes/
+│   │   │   └── analyze.py
+│   │   │
+│   │   ├── services/
+│   │   │   ├── gemini_service.py
+│   │   │   └── gnews_service.py
+│   │   │
+│   │   ├── models/
+│   │   └── main.py
+│   │
+│   ├── requirements.txt
+│   └── .env
+│
+├── frontend/
+│   ├── app/
+│   ├── components/
+│   ├── public/
+│   └── package.json
+│
+└── README.md
 ```
 
+---
+
+##  Installation & Setup
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/genAI-fake-news-detector.git
+cd genAI-fake-news-detector
 ```
+
+Replace `YOUR_USERNAME` with your GitHub username.
+
+---
+
+## ⚙️ Backend Setup
+
+Move to backend:
+
+```bash
+cd backend
+```
+
+Create virtual environment:
+
+```bash
+python -m venv venv
+```
+
+Activate it:
+
+### Windows
+```bash
+venv\Scripts\activate
+```
+
+### Mac/Linux
+```bash
+source venv/bin/activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Create `.env` file:
+
+```env
+GROQ_API_KEY=your_groq_api_key
+GNEWS_API_KEY=your_gnews_api_key
+```
+
+Run backend:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Backend URL:
+
+```bash
+http://localhost:8000
+```
+
+---
+
+##  Frontend Setup
+
+Move to frontend:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run frontend:
+
+```bash
+npm run dev
+```
+
+Frontend URL:
+
+```bash
+http://localhost:3000
+```
+
+---
+
+## 🔌 API Endpoint
+
+### Analyze Claim
+
+**POST** `/analyze`
+
+Request:
+
+```json
+{
+  "text": "India won the 2026 ICC T20 World Cup"
+}
+```
+
+Response:
+
+```json
+{
+  "verdict": "Uncertain",
+  "confidence": 65,
+  "explanation": "Available evidence does not confirm the claim.",
+  "sources": [
+    {
+      "title": "News article title",
+      "source": "BBC",
+      "url": "https://..."
+    }
+  ]
+}
+```
+
+---
+
+## 🎥 Demo
+
+### Sample Project Runs
+
+#### UI Walkthrough
+![Project Demo 1](./prjss1.gif)
+
+#### Fake Claim Analysis
+![Project Demo 2](./prjss2.gif)
+
+#### Live News Verification
+![Project Demo 3](./prjss3.gif)
+
+---
+
+##  Future Improvements
+
+Planned upgrades:
+
+- URL article fact checking
+- Image / screenshot fake news detection
+- OCR integration
+- WhatsApp forward verification
+- Social media misinformation analysis
+- RAG-based evidence retrieval
+- Source credibility scoring
+- Domain-specific fact checking
+- Multilingual misinformation detection
+
+---
+
+##  Why This Project Matters
+
+Misinformation can influence:
+
+- Elections
+- Public safety
+- Healthcare decisions
+- Financial markets
+- Social trust
+
+This project demonstrates how Generative AI can be used responsibly to combat misinformation using transparent, evidence-backed reasoning.
+
+---
+
+##  Author
+
+**Navneet Singh**
+
+GitHub: https://github.com/YOUR_USERNAME
+
+---
+
+## 📄 License
+
+MIT License

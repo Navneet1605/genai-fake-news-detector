@@ -318,7 +318,7 @@ This project demonstrates how Generative AI can be used responsibly to combat mi
 
 **Navneet Singh**
 
-GitHub: https://github.com/YOUR_USERNAME
+GitHub: https://github.com/Navneet1605
 
 ---
 

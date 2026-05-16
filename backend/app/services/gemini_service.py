@@ -27,6 +27,12 @@ TRUSTED_DOMAINS = [
 
 
 def clean_json_response(raw):
+    """
+    Removes markdown code fences from LLM JSON responses.
+    """
+    if not raw:
+        return ""
+
     cleaned = raw.strip()
 
     if cleaned.startswith("```json"):
@@ -36,6 +42,29 @@ def clean_json_response(raw):
         cleaned = cleaned.replace("```", "").strip()
 
     return cleaned
+
+
+def normalize_result(parsed, sources=None):
+    """
+    Guarantees API-safe response shape.
+    """
+
+    if not isinstance(parsed, dict):
+        parsed = {}
+
+    if "verdict" not in parsed:
+        parsed["verdict"] = "Uncertain"
+
+    if "confidence" not in parsed:
+        parsed["confidence"] = 50
+
+    if "explanation" not in parsed:
+        parsed["explanation"] = "Model returned incomplete response."
+
+    if "sources" not in parsed:
+        parsed["sources"] = sources if sources else []
+
+    return parsed
 
 
 def optimize_search_query(text):
@@ -77,7 +106,6 @@ def filter_trusted_sources(evidence):
 
 def analyze_fake_news(text):
     evidence = fetch_news_evidence(text)
-
     claim = text.lower()
 
     if not evidence:
@@ -133,6 +161,7 @@ def analyze_fake_news(text):
 
     # fallback to LLM
     evidence_text = ""
+
     for item in evidence:
         evidence_text += f"""
 Source: {item['source']}
@@ -140,9 +169,15 @@ Title: {item['title']}
 """
 
     prompt = f"""
-Determine if claim is Real, Fake, or Uncertain.
+Determine if the claim is Real, Fake, or Uncertain based ONLY on the evidence.
 
-Return JSON only.
+Return ONLY valid JSON in this exact format:
+
+{{
+  "verdict": "Real",
+  "confidence": 85,
+  "explanation": "short explanation"
+}}
 
 CLAIM:
 {text}
@@ -161,12 +196,18 @@ EVIDENCE:
             max_tokens=300
         )
 
-        cleaned = clean_json_response(response.choices[0].message.content)
-        parsed = json.loads(cleaned)
-        parsed["sources"] = evidence
-        return parsed
+        raw = response.choices[0].message.content
+        cleaned = clean_json_response(raw)
 
-    except:
+        print("LLM RAW RESPONSE:", raw)
+
+        parsed = json.loads(cleaned)
+
+        return normalize_result(parsed, evidence)
+
+    except Exception as e:
+        print("ANALYSIS ERROR:", str(e))
+
         return {
             "verdict": "Uncertain",
             "confidence": 50,
